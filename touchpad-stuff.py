@@ -7,14 +7,14 @@ os.environ["SDL_AUDIODRIVER"] = "dummy"
 pygame.init()
 
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Emoji Gesture Writer")
+pygame.display.set_caption("Emoji Gesture Writer - Swipe Series")
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 emoji_font_path = "/System/Library/Fonts/Apple Color Emoji.ttc"
 if os.path.exists(emoji_font_path):
-    base_font = pygame.font.Font(emoji_font_path, 90) 
+    base_font = pygame.font.Font(emoji_font_path, 90)
 else:
     base_font = pygame.font.SysFont(None, 90)
 
@@ -25,22 +25,69 @@ SWIPE_THRESHOLD = 50
 DOUBLE_CLICK_THRESHOLD = 0.35
 LONG_CLICK_THRESHOLD = 0.7
 
-lines = [[]] 
+lines = [[]]
 line_y = 100
-emoji_scale = 0.3 
+emoji_scale = 0.3
+
+trial_data = []
+start_time = time.time()
+last_input_time = start_time
+inputs_in_line = 0
+line_start_time = start_time
 
 def make_emoji_surface(char):
     """Render and resize emoji"""
     surf = base_font.render(char, True, BLACK)
     w, h = surf.get_size()
-    scaled = pygame.transform.smoothscale(surf, (int(w * emoji_scale), int(h * emoji_scale)))
+    scaled = pygame.transform.smoothscale(
+        surf, (int(w * emoji_scale), int(h * emoji_scale))
+    )
     return scaled
 
+
 def add_emoji(emoji):
+    """Add emoji to display and log timing"""
+    global last_input_time, inputs_in_line
     lines[-1].append(make_emoji_surface(emoji))
+    current_time = time.time()
+    delta = current_time - last_input_time
+    total_since_start = current_time - start_time
+    trial_data.append(
+        {
+            "emoji": emoji,
+            "timestamp": round(current_time, 3),
+            "delta_since_last": round(delta, 3),
+            "total_elapsed": round(total_since_start, 3),
+            "line_number": len(lines),
+        }
+    )
+    print(
+        f"Emoji: {emoji} | since last: {delta:.3f}s | Total elapsed: {total_since_start:.3f}s | Line {len(lines)}"
+    )
+    last_input_time = current_time
+    inputs_in_line += 1
+
 
 def next_line():
+    """Start a new line, record total time for previous one"""
+    global inputs_in_line, line_start_time
+    current_time = time.time()
+    line_duration = current_time - line_start_time
+    if inputs_in_line > 0:
+        print(
+            f"--- Line {len(lines)} completed in {line_duration:.3f}s ({inputs_in_line} inputs) ---"
+        )
+        trial_data.append(
+            {
+                "emoji": "<LINE_SUBMIT>",
+                "timestamp": round(current_time, 3),
+                "line_duration": round(line_duration, 3),
+                "inputs": inputs_in_line,
+            }
+        )
     lines.append([])
+    inputs_in_line = 0
+    line_start_time = time.time()
 
 while running:
     screen.fill(WHITE)
@@ -58,7 +105,6 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 3:
                 next_line()
-                print("Newline triggered (right-click)")
                 continue
 
             mouse_down_pos = event.pos
@@ -86,7 +132,7 @@ while running:
                 elif abs_dx > SWIPE_THRESHOLD or abs_dy > SWIPE_THRESHOLD:
                     if abs_dx > abs_dy:
                         if dx > 0:
-                            add_emoji("😆") 
+                            add_emoji("😆")
                             print("Swipe right = haha 😆")
                         else:
                             add_emoji("😥")
@@ -106,9 +152,14 @@ while running:
         x = 30
         for emoji_surf in line:
             screen.blit(emoji_surf, (x, y))
-            x += emoji_surf.get_width() + 8 
-        y += 75  # line spacing
+            x += emoji_surf.get_width() + 8
+        y += 75
 
     pygame.display.flip()
 
 pygame.quit()
+
+print("\n===== SESSION SUMMARY =====")
+for entry in trial_data:
+    print(entry)
+print("============================")
