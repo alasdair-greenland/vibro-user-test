@@ -1,5 +1,8 @@
 import time
 import serial
+import random
+import csv
+from datetime import datetime
 
 PORT = "COM5"
 BAUD = 9600
@@ -18,30 +21,30 @@ def buzz_motor(ser, strength, duration=1):
     time.sleep(duration)
     ser.write(b"0\n")
 
-def like():
+def like1():
     buzz_motor(vib, LOW, 0.1)
     time.sleep(0.075)
     buzz_motor(vib, LOW, 0.1)
 
-def heart():
+def heart1():
     buzz_motor(vib, MED, 0.25)
     time.sleep(0.1)
     buzz_motor(vib, MED, 0.25)
 
-def sad():
+def sad1():
     buzz_motor(vib, LOW, 0.8)
 
-def angry():
+def angry1():
     buzz_motor(vib, HIGH, 0.8)
 
-def haha():
+def haha1():
     buzz_motor(vib, LOW, 0.15)
     time.sleep(0.05)
     buzz_motor(vib, MED, 0.15)
     time.sleep(0.05)
     buzz_motor(vib, HIGH, 0.15)
 
-def yay():
+def yay1():
     buzz_motor(vib, HIGH, 0.25)
     time.sleep(0.1)
     buzz_motor(vib, HIGH, 0.25)
@@ -66,6 +69,19 @@ def haha2():
 def yay2():
     buzz_motor(vib, MED, LONG)
 
-like2()
-time.sleep(1)
-sad2()
+def do_trials(v):
+    now = datetime.now()
+    filename = "../raw-data/" + now.strftime("%H%M%S") + ".csv"
+    types = ["like", "heart", "sad", "angry", "haha", "yay"]
+    trials = []
+    for type in types:
+        trials += [type] * 4
+    random.shuffle(trials)
+    with open(filename, mode="w", newline="") as file:
+        writer = csv.writer(file)
+        for trial in trials:
+            writer.writerow([trial,])
+            exec(trial + str(v) + "()")
+            time.sleep(5)
+
+do_trials(1)
