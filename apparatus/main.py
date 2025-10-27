@@ -84,4 +84,12 @@ def do_trials(v):
             exec(trial + str(v) + "()")
             time.sleep(5)
 
+def do_demo(v):
+    types = ["like", "heart", "sad", "angry", "haha", "yay"]
+    for type in types:
+        time.sleep(3)
+        print(type + "\n\n", flush=True)
+        exec(type + str(v) + "()")
+        time.sleep(3)
+
 do_trials(1)

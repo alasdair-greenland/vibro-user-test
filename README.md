@@ -10,8 +10,8 @@ How do different vibration patterns and touch-based input methods affect users�
 ## Key for inputs:
 Version 1: Swipe Series
 swipe-down = angry 😡
-swipe-up = yay 😊
-swipe-left = cry 😥
+swipe-up = cry 😥
+swipe-left = yay 😊
 swipe-right = haha 😆
 double-click = like 👍
 long-click = heart ❤️

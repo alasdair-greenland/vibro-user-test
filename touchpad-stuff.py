@@ -135,15 +135,15 @@ while running:
                             add_emoji("😆")
                             print("Swipe right = haha 😆")
                         else:
-                            add_emoji("😥")
-                            print("Swipe left = cry 😥")
+                            add_emoji("😊")
+                            print("Swipe left = yay 😊")
                     else:
                         if dy > 0:
                             add_emoji("😡")
                             print("Swipe down = angry 😡")
                         else:
-                            add_emoji("😊")
-                            print("Swipe up = yay 😊")
+                            add_emoji("😥")
+                            print("Swipe up = cry 😥")
 
                 mouse_down_pos = None
 
