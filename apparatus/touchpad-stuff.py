@@ -3,6 +3,8 @@ import pygame
 import time
 
 # To prevent audio issues because for some reason they were happening
+# Swipe based version of touchpad-stuff.py...I.e First version
+
 os.environ["SDL_AUDIODRIVER"] = "dummy"
 pygame.init()
 
