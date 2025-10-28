@@ -2,6 +2,9 @@
 User test for a system that allows users to send/received emoticons via trackpad/vibrations
 
 ## Key for inputs:
+Hitting f will full screen the page.
+Hitting q will exit the page and print out the results.
+
 # Version 1: Swipe Series
 swipe-down = angry 😡
 swipe-up = cry 😥
