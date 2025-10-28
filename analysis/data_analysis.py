@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-data_folder = os.path.join(BASE_DIR, "raw-data")
+data_folder = os.path.join(BASE_DIR, "..", "raw-data")
 out_folder = os.path.join(BASE_DIR, "results")
 
 os.makedirs(out_folder, exist_ok=True)
