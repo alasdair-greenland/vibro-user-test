@@ -58,3 +58,10 @@ Training Phase:
 - Analysingf the data, when we get data how do we anaylys mistacts with machine learninhg and the classifying, correct rate lable, incorrect label, miidle is good, difference between which confusion happened, angey? What was the common mistake, track common mistacks, make confusion matrics.
 
 Phase one: mastery test
+
+# Data Formatting
+For the vibration sensing:
+Files are named p(n)-t(n)-s(n).csv, with the ns meaning the participant number, trial number, and set used, respectively. The first column in the csv file is the actual symbol sent was, and the second column is what the user thought the symbol was.
+
+For the inputting:
+Files are named p(n)-input-s(n).csv, with the ns meaning the participant number and set used, respectively. The formatting is the same: the first column is the symbol the user was meant to input (pattern was the same every time), and the second column is what they actually inputted. Sometimes there was no input or the program didn't pick up the input; there are marked by leaving the second column blank.
